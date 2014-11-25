@@ -6,7 +6,11 @@ module CarrierWave
   module ActiveRecord
     module Serializable
       def serialized_uploaders
-        @serialized_uploaders ||= {}
+        @serialized_uploaders ||= if superclass.respond_to?(:serialized_uploaders)
+                                    superclass.serialized_uploaders
+                                  else
+                                    {}
+                                  end
       end
 
       def serialized_uploader?(column)
